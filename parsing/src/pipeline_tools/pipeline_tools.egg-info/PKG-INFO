@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: pipeline_tools
+Version: 0.1.0
+Summary: Simple ML pipeline with habr parsing
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: apache-airflow>=3.0.6
+Requires-Dist: beautifulsoup4>=4.13.5
+Requires-Dist: clickhouse-connect>=0.8.18
+Requires-Dist: clickhouse-driver>=0.2.9
+Requires-Dist: feedparser>=6.0.11
+Requires-Dist: mlflow>=3.3.2
+Requires-Dist: pandas>=2.3.2
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: pytest>=8.4.1
+Requires-Dist: scikit-learn>=1.7.1
