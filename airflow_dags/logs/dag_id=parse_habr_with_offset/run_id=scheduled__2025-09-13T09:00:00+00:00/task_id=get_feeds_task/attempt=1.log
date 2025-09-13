@@ -1,4 +1,0 @@
-{"timestamp":"2025-09-13T09:13:26.023509","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
-{"timestamp":"2025-09-13T09:13:26.023873","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/parse_habr_dag.py","logger":"airflow.models.dagbag.DagBag"}
-{"timestamp":"2025-09-13T09:13:26.266435","level":"warning","event":"/home/airflow/.local/lib/python3.12/site-packages/airflow/models/variable.py:147: DeprecationWarning: Using Variable.get from `airflow.models` is deprecated.Please use `get` on Variable from sdk(`airflow.sdk.Variable`) instead\n  warnings.warn(\n","logger":"py.warnings"}
-{"timestamp":"2025-09-13T09:13:26.274148","level":"info","event":"Парсим 10 со смещением 1","logger":"pipeline_tools.parsers"}

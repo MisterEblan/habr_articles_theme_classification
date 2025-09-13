@@ -75,10 +75,10 @@ class ClickhouseService(DatabaseService[HabrFeed, QuerySummary]):
             f"SELECT title FROM habr_dataset WHERE id={id}"
         ).result_columns
 
-        logger.debug(f"Result columns: {result}")
-        print(f"RESULT COLUMNS: {result}")
+        logger.info(f"Result columns: {result}")
+        logger.info("Columns type: %s", type(result))
 
-        return not result
+        return bool(result)
 
     def save(self, feed: HabrFeed) -> QuerySummary:
         """Сохраняет ленту страниц в БД

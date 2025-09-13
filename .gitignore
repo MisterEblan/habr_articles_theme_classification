@@ -1,0 +1,6 @@
+**.env
+.venv
+**__pycache__
+clickhouse_data
+airflow_dags/logs
+**.csv

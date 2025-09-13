@@ -3,11 +3,12 @@ src/pipeline_tools/__init__.py
 src/pipeline_tools/data_models.py
 src/pipeline_tools/db.py
 src/pipeline_tools/errors.py
-src/pipeline_tools/parsers.py
 src/pipeline_tools.egg-info/PKG-INFO
 src/pipeline_tools.egg-info/SOURCES.txt
 src/pipeline_tools.egg-info/dependency_links.txt
 src/pipeline_tools.egg-info/requires.txt
 src/pipeline_tools.egg-info/top_level.txt
+src/pipeline_tools/parsers/__init__.py
+src/pipeline_tools/parsers/habr.py
 tests/test_clickhouse.py
 tests/test_habr_parser.py

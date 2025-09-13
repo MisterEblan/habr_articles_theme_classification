@@ -1,6 +1,0 @@
-{"timestamp":"2025-09-13T09:48:28.133905","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
-{"timestamp":"2025-09-13T09:48:28.134265","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/parse_habr_dag.py","logger":"airflow.models.dagbag.DagBag"}
-{"timestamp":"2025-09-13T09:48:29.026254","level":"info","event":"Парсим 5 со смещением 1","logger":"pipeline_tools.parsers"}
-{"timestamp":"2025-09-13T09:48:29.026329","level":"info","event":"URL: https://habr.com/ru/articles/page1","logger":"pipeline_tools.parsers"}
-{"timestamp":"2025-09-13T09:48:42.086351","level":"info","event":"URL: https://habr.com/ru/articles/page2","logger":"pipeline_tools.parsers"}
-{"timestamp":"2025-09-13T09:48:54.678453","level":"info","event":"URL: https://habr.com/ru/articles/page3","logger":"pipeline_tools.parsers"}

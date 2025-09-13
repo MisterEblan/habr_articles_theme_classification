@@ -167,6 +167,8 @@ services:
   airflow-worker:
     <<: *airflow-common
     command: celery worker
+    volumes:
+      - ./csvs:/opt/airflow/csvs
     healthcheck:
       # yamllint disable rule:line-length
       test:
@@ -341,6 +343,7 @@ services:
       - "9000:9000"
     volumes:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+      - clickhouse_data:/var/lib/clickhouse
     env_file: "clickhouse.env"
     deploy:
       resources:
@@ -360,3 +363,5 @@ services:
 
 volumes:
   postgres-db-volume:
+  clickhouse_data:
+    driver: local
