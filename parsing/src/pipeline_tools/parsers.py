@@ -27,24 +27,50 @@ class FeedParser(ABC, Generic[AbstractFeed]):
 
     @abstractmethod
     def parse(self) -> AbstractFeed:
-        """Метод для получения ленты сайта"""
+        """Метод для получения ленты сайта
 
+        Returns:
+            AbstractFeed: абстрактная лента страниц.
+        """
         pass
 
     @abstractmethod
-    def parse_with_offset(self, offset: int, n_pages: int = 5) -> List[AbstractFeed]:
-        """Метод для парсинга нескольких страниц ленты с оффсетом"""
+    def parse_with_offset(
+            self,
+            offset: int,
+            n_pages: int = 5
+    ) -> List[AbstractFeed]:
+        """Метод для парсинга нескольких страниц ленты с оффсетом
+
+        Args:
+            offset: смещение ленты.
+            n_pages: количество страниц ленты для парсинга.
+
+        Returns:
+            List[AbstractFeed]: список распаршенных лент.
+        """
         pass
 
 class HabrParser(
     FeedParser[HabrFeed]
     ):
+    """Класс парсинга для Habr"""
+
     def __init__(self, base_url: str):
+        """
+        Args:
+            base_url: базовая ссылка на habr.
+        """
         self.base_url = base_url
         self.feed_url = f"{base_url}/ru/articles"
 
 
     def parse(self) -> HabrFeed:
+        """Метод для получения ленты сайта
+
+        Returns:
+            AbstractFeed: абстрактная лента страниц.
+        """
         logger.info("Fetching feed...")
         try:
             result = requests.get(self.feed_url)
@@ -56,6 +82,15 @@ class HabrParser(
         return feed
 
     def parse_with_offset(self, offset: int, n_pages: int = 5) -> List[HabrFeed]:
+        """Метод для парсинга нескольких страниц ленты с оффсетом
+
+        Args:
+            offset: смещение ленты.
+            n_pages: количество страниц ленты для парсинга.
+
+        Returns:
+            List[AbstractFeed]: список распаршенных лент.
+        """
         logger.info(f"Парсим {n_pages} со смещением {offset}")
 
         if offset == 0:
@@ -63,10 +98,10 @@ class HabrParser(
 
         try:
             feeds = []
-            for i in range(offset, n_pages):
+            for i in range(offset, offset + n_pages):
                 url = f"{self.feed_url}/page{i}"
 
-                logger.debug(f"URL: {url}")
+                logger.info(f"URL: {url}")
 
                 result = requests.get(url)
 
@@ -82,6 +117,14 @@ class HabrParser(
 
 
     def _parse_page(self, page_url: str) -> PageInfo:
+        """Парсит сырую HTML страницу по ссылке
+
+        Args:
+            page_url: ссылка на страницу.
+
+        Returns:
+            PageInfo: информация о странице.
+        """
         url = self.base_url + page_url
 
         logger.debug(f"Getting content and hub from {url}")
@@ -92,15 +135,32 @@ class HabrParser(
             soup = BeautifulSoup(page_request, "html.parser")
             
             content_div = soup.find("div", class_="tm-article-body")
-            hubs_list = soup.find("ul", class_="tm-separated-list__list")
-            first_hub = hubs_list.find("li").get_text()
+
+            containers = soup.find_all("div", class_="tm-separated-list")
+
+            for container in containers:
+                title_span = container.find("span", class_="tm-separated-list__title")
+                if title_span and "Хабы" in title_span.text:
+                    hubs_list = container.find("ul", class_="tm-separated-list__list")
+
+            hubs = hubs_list.find_all("li")
+            first_hub = None
+
+            for hub in hubs:
+                if hub and not "Блог" in hub.text or \
+                    not "Блог компании" in hub.text:
+                    first_hub = hub.get_text()
 
             if not first_hub:
-                raise HubNotFound("На странице не найден первый хаб")
+                logging.warning("На странице не найден первый хаб")
+                logging.warning("Хабы: %s", hubs)
+
+                first_hub = "unknown"
 
             if not content_div:
                 raise EmptyBodyError("На странице нет содержания")
 
+            first_hub = self._normalize_hub(first_hub)
             content = content_div.get_text(" ")
 
             info = PageInfo(
@@ -113,6 +173,14 @@ class HabrParser(
             raise InvalidUrlError("Введён неверный URL")
 
     def _parse_raw_result(self, result: str) -> HabrFeed:
+        """Парсинг сырого HTML фида
+
+        Args:
+            result: сырой HTML.
+
+        Returns:
+            HabrFeed: лента страниц.
+        """
 
         soup = BeautifulSoup(result, "html.parser")
         link_tags = soup.find_all("a", class_="tm-title__link")
@@ -152,3 +220,15 @@ class HabrParser(
                 continue
 
         return HabrFeed(pages=pages)
+
+    def _normalize_hub(self, hub: str) -> str:
+        """Приводит все хабы к нижнему регистру
+
+        Args:
+            hub: хаб, который нужно преобразовать.
+
+        Returns:
+            str: преобразованный хаб.
+        """
+
+        return hub.strip().lower()

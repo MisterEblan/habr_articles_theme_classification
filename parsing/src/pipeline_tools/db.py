@@ -33,16 +33,22 @@ class DatabaseService(ABC, Generic[AbstractFeed, AbstractDatabaseOutput]):
 
 
 class ClickhouseService(DatabaseService[HabrFeed, QuerySummary]):
+    """Класс для работы с ClickHouse"""
 
     def __init__(
         self,
         host: str,
-        port: int,
         user: str="admin",
         password: str ="admin",
         database: str="habr_data",
-        compression: str = "gzip"
     ):
+        """
+        Args:
+            host: хост Clickhouse.
+            user: пользователь в Clickhouse.
+            password: пароль пользователя.
+            database: база данных в Clickhouse.
+        """
         self.user = user
         self.password = password
 
@@ -56,24 +62,42 @@ class ClickhouseService(DatabaseService[HabrFeed, QuerySummary]):
         assert self.client.query("SELECT version()")
 
     def _is_page_exists(self, id: str) -> bool:
+        """Проверка на наличие страницы в базе данных
+
+        Args:
+            id: идентификатор страницы.
+
+        Returns:
+            bool: найдена ли страница в БД.
+        """
         logger.debug(f"Проверка статьи \"{id}\" на существование в базе данных")
         result = self.client.query(
             f"SELECT title FROM habr_dataset WHERE id={id}"
         ).result_columns
 
         logger.debug(f"Result columns: {result}")
+        print(f"RESULT COLUMNS: {result}")
 
-        return all(result_col == [] for result_col in result)
+        return not result
 
     def save(self, feed: HabrFeed) -> QuerySummary:
+        """Сохраняет ленту страниц в БД
+
+        Args:
+            feed: лента страниц.
+
+        Returns:
+            QuerySummary: сводка по операции.
+        """
         logger.info(f"Сохранение {len(feed.pages)} страниц")
 
         for page in feed.pages:
             if self._is_page_exists(str(page.id)):
                 feed.pages.remove(page)
-                warnings.warn(
+                logger.warning(
                     f"Статья \"{page.title}\" уже есть в базе данных"
                 )
+                continue
 
 
         data_tuples = [
@@ -91,6 +115,11 @@ class ClickhouseService(DatabaseService[HabrFeed, QuerySummary]):
 
 
     def get_all(self) -> List[Page]:
+        """Получение всех страниц из базы данных
+
+        Returns:
+            List[Page]: список всех страниц из базы данных.
+        """
         logger.info("Getting all pages")
 
         data = self.client.query("SELECT * FROM habr_dataset")

@@ -24,7 +24,6 @@ def habr_feed() -> HabrFeed:
 def clickhouse_service() -> DatabaseService:
     return ClickhouseService(
         host="localhost",
-        port=9000,
         user="admin",
         password="admin",
         database="habr_data"

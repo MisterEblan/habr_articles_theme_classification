@@ -1,4 +1,3 @@
-README.md
 pyproject.toml
 src/pipeline_tools/__init__.py
 src/pipeline_tools/data_models.py
