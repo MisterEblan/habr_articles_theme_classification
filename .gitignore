@@ -11,3 +11,13 @@ notebooks/logs*
 notebooks/results*
 **.pkl
 **.DS_Store
+
+app/**.pyc
+app/__pycache__
+app/*.env
+app/init_tests.sh
+app/uv.lock
+app/.venv
+app/.coverage
+app/*.egg-info
+app/.ruff_cache
