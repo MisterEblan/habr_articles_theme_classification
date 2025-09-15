@@ -42,7 +42,8 @@ class BaselinePredictor(
         self.model: Pipeline = joblib.load(model_path)
         self.preprocessor = preprocessor
 
-        assert self.model
+        if not self.model:
+            raise ValueError("Модель не была загружена")
 
     async def predict(self, article: str) -> Prediction:
         preprocessed_article = await self.preprocessor.preprocess(
