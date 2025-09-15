@@ -4,3 +4,10 @@
 clickhouse_data
 airflow_dags/logs
 **.csv
+
+notebooks/.ipynb_checkpoints
+notebooks/fintuned*
+notebooks/logs*
+notebooks/results*
+**.pkl
+**.DS_Store
