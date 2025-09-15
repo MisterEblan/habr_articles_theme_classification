@@ -1,0 +1,20 @@
+[project]
+name = "habr_classification_app"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic-settings>=2.10.1",
+    "scikit-learn==1.7.1",
+]
+
+[dependency-groups]
+dev = [
+    "bandit>=1.8.6",
+    "dotenv>=0.9.9",
+    "pylint>=3.3.8",
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "pytest-cov>=6.2.1",
+]
