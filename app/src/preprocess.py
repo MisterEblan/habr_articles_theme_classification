@@ -1,3 +1,5 @@
+"""Препроцессоры"""
+
 from abc import ABC, abstractmethod
 
 class AbstractPreprocessor(ABC):

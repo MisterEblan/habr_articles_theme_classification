@@ -1,3 +1,5 @@
+"""Точка входа в API приложение"""
+
 from fastapi import FastAPI
 from src.api.routes import router
 

@@ -1,3 +1,5 @@
+"""Роуты"""
+
 from fastapi import APIRouter, Depends
 
 from src.api.dependencies import baseline_predictor
@@ -6,7 +8,7 @@ from src.predictor import BaselinePredictor
 
 import logging
 
-log_config = logging.basicConfig()
+logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 router = APIRouter(

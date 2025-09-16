@@ -1,3 +1,5 @@
+"""Предикторы"""
+
 import joblib
 import asyncio
 

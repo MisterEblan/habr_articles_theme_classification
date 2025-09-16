@@ -1,3 +1,5 @@
+"""Модели для работы с API сервиса"""
+
 from pydantic import BaseModel
 
 from .predictions import Prediction

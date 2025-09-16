@@ -1,3 +1,5 @@
+"""Модели предсказаний"""
+
 from enum import Enum
 
 class Prediction(Enum):

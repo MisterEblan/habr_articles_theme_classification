@@ -1,3 +1,5 @@
+"""Зависимости FastAPI приложения"""
+
 from ..preprocess import BaselinePreprocessor
 from ..predictor import BaselinePredictor
 from ..config import app_config
