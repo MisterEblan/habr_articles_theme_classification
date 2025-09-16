@@ -18,6 +18,7 @@ async def predict_hub(
         request: PredictionRequest,
         baseline_predictor: BaselinePredictor = Depends(baseline_predictor)
 ):
+    """Предсказывает хаб статьи из PredictionRequest"""
     prediction = await baseline_predictor.predict(request.article)
 
     logger.info("Prediction: %s", prediction)

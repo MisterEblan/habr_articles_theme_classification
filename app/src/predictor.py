@@ -1,11 +1,11 @@
 import joblib
 import asyncio
 
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 from sklearn.pipeline import Pipeline
 
 from .data_models.predictions import Prediction
-from .preprocess import AbstractPreprocessor, BaselinePreprocessor
+from .preprocess import BaselinePreprocessor
 from .helpers import Singleton
 
 class AbstractPredictor(ABC):
@@ -46,6 +46,17 @@ class BaselinePredictor(
             raise ValueError("Модель не была загружена")
 
     async def predict(self, article: str) -> Prediction:
+        """Предсказывает хаб статьи
+
+        Также предобрабатывает статью.
+
+        Args:
+            article: текст статьи, хаб
+                которой нужно предсказать.
+
+        Returns:
+            Prediction: предсказанный хаб.
+        """
         preprocessed_article = await self.preprocessor.preprocess(
             article
         )
