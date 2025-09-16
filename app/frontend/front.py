@@ -5,6 +5,11 @@ from requests.exceptions import HTTPError
 import streamlit as st
 import requests
 
+import logging
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+
 def request_classification(article: str) -> Dict[str, Union[bool, str]]:
     """Делает запрос в Hub Prediction API
 
@@ -16,7 +21,7 @@ def request_classification(article: str) -> Dict[str, Union[bool, str]]:
             словарь-ответ от API.
     """
     response = requests.post(
-        "http://127.0.0.1:8000/api/v1/articles/predict",
+        "http://backend:8000/api/v1/articles/predict",
         json={
             "article": article
         },
@@ -52,12 +57,12 @@ if submit:
 
     except HTTPError as err:
 
-        print("HTTPError:", err)
+        logger.error("HTTPError: %s", err)
 
         st.error("Что-то пошло не так при запросе!")
 
     except Exception as err:
         
-        print("ERROR:", err)
+        logger.error("ERROR: %s", err)
 
         st.error("Что-то пошло не так!")

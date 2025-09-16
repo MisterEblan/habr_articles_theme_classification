@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: habr_classification_app_backend
+    ports:
+      - "8000:8000"
+    networks:
+      - habr_classification_network
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: habr_classification_app_frontend
+    ports:
+      - "8501:8501"
+    networks:
+      - habr_classification_network
+
+networks:
+  habr_classification_network:
+    driver: bridge
